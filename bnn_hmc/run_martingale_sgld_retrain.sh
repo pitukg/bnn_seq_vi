@@ -66,6 +66,6 @@ python bnn_hmc/run_sgmcmc.py \
     --num_burnin_epochs=1000 \
     --eval_freq=10 \
     --batch_size=80 \
-    --save_freq=100 \
+    --save_freq=10 \
     --momentum=0.
 
