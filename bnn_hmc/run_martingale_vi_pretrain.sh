@@ -20,10 +20,10 @@ echo "Pretraining SGD..."
 python bnn_hmc/run_sgd.py \
     --seed=$SEED \
     --weight_decay=10 \
-    --dir=$EXPERIMENT_DIR/sgd/cifar10/ \
+    --dir=$EXPERIMENT_DIR/sgd50/cifar10/ \
     --model_name=resnet20_frn_swish \
     --dataset_name=cifar10 \
-    --subset_train_to=4080 \
+    --subset_train_to=20400 \
     --init_step_size=3e-7 \
     --num_epochs=500 \
     --eval_freq=10 \
@@ -34,12 +34,12 @@ echo "Pretraining VI..."
 python bnn_hmc/run_vi.py \
     --seed=$SEED \
     --weight_decay=5. \
-    --dir=$EXPERIMENT_DIR/vi/cifar10/ \
+    --dir=$EXPERIMENT_DIR/vi50/cifar10/ \
     --model_name=resnet20_frn_swish \
     --dataset_name=cifar10 \
-    --subset_train_to=4080 \
+    --subset_train_to=20400 \
     --save_actual_dataset \
-    --mean_init_checkpoint=$EXPERIMENT_DIR/sgd/cifar10/sgd_mom_0.9__lr_sch_i_3e-07___epochs_500_wd_10.0_batchsize_80_temp_1.0__seed_$SEED/model_step_499.pt \
+    --mean_init_checkpoint=$EXPERIMENT_DIR/sgd50/cifar10/sgd_mom_0.9__lr_sch_i_3e-07___epochs_500_wd_10.0_batchsize_80_temp_1.0__seed_$SEED/model_step_499.pt \
     --init_step_size=1e-4 \
     --optimizer=Adam \
     --vi_sigma_init=0.01 \
