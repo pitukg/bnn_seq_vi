@@ -1,3 +1,11 @@
+This project [REDACTED] builds on the open-sourced code for the paper [_What Are Bayesian Neural Network Posteriors Really Like?_](https://arxiv.org/abs/2104.14421).
+Notable changes are:
+- Support in the variational inference implementation to take ELBO from any given pretrained mean-field prior.
+- Support for synthetically drawing labels from SGD or VI checkpoints.
+- Various scripts to ensemble different predictions and run experiments for our paper.
+
+Original README reproduced below:
+
 # What Are Bayesian Neural Network Posteriors Really Like?
 
 This repository contains the code to reproduce the experiments in the paper
