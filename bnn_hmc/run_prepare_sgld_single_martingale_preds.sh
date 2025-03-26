@@ -7,6 +7,9 @@ if [ -z "$1" ]; then
 fi
 MARTINGALE_SEED="$1"
 
+DATASET="imdb"
+MODEL="cnn_lstm"
+
 # Define input filenames and number of bootstrap samples
 EXPERIMENT_DIR="/mnt/disks/checkpoints/martingale"
 RUNWD="$HOME/bnn_hmc/"
@@ -19,19 +22,19 @@ export PYTHONPATH="$RUNWD/:$PYTHONPATH"
 
 input_checkpoints=()
 for pt in $(seq 1000 10 9999); do
-	input_checkpoints+=("$EXPERIMENT_DIR/retrain/sgld/cifar10/sgld_mom_0.0_preconditioner_None__lr_sch_constant_i_1e-06_f_1e-06_c_50_bi_1000___epochs_10000_wd_5.0_batchsize_80_temp_1.0__seed_$MARTINGALE_SEED/model_step_$pt.pt")
+	input_checkpoints+=("$EXPERIMENT_DIR/retrain/sgld/$DATASET/sgld_mom_0.0_preconditioner_None__lr_sch_constant_i_1e-05_f_1e-05_c_50_bi_1000___epochs_10000_wd_5.0_batchsize_80_temp_1.0__seed_$MARTINGALE_SEED/model_step_$pt.pt")
 done
-# readarray -d '' input_checkpoints < <(find $EXPERIMENT_DIR/retrain/sgld/cifar10 -wholename "*/sgld_mom_0.0_preconditioner_None__lr_sch_constant_i_1e-06_f_1e-06_c_50_bi_1000___epochs_10000_wd_5.0_batchsize_80_temp_1.0__seed_$MARTINGALE_SEED/model_step_*.pt" -print0)
+# readarray -d '' input_checkpoints < <(find $EXPERIMENT_DIR/retrain/sgld/$DATASET -wholename "*/sgld_mom_0.0_preconditioner_None__lr_sch_constant_i_1e-06_f_1e-06_c_50_bi_1000___epochs_10000_wd_5.0_batchsize_80_temp_1.0__seed_$MARTINGALE_SEED/model_step_*.pt" -print0)
 
 # Get the number of input files
 num_files="${#input_checkpoints[@]}"
 
 echo "Ensembling checkpoints..."
 python bnn_hmc/ensemble_checkpoints.py \
-    --dir=$EXPERIMENT_DIR/ensemble/sgld/cifar10/preagg_sample_$MARTINGALE_SEED \
-    --model_name=resnet20_frn_swish \
-    --dataset_name=cifar10 \
-    --subset_train_to=4080 \
+    --dir=$EXPERIMENT_DIR/ensemble/sgld/$DATASET/preagg_sample_$MARTINGALE_SEED \
+    --model_name=$MODEL \
+    --dataset_name=$DATASET \
+    --subset_train_to=4000 \
     --save_ensembled_preds \
     --sgd_checkpoints \
     -- ${input_checkpoints[@]}
