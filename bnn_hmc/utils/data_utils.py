@@ -103,7 +103,7 @@ def load_imdb_dataset():
   https://github.com/google-research/google-research/blob/master/cold_posterior_bnn/imdb/imdb_data.py
   """
   (x_train, y_train), (x_test, y_test) = imdb.load_data(
-      path="./datasets", num_words=_IMDB_CONFIG["max_features"])
+      num_words=_IMDB_CONFIG["max_features"])
   num_train = _IMDB_CONFIG["num_train"]
   x_train, x_val = x_train[:num_train], x_train[num_train:]
   y_train, y_val = y_train[:num_train], y_train[num_train:]
@@ -299,6 +299,7 @@ def make_ds_pmap_fullbatch(name, dtype, n_devices=None, truncate_to=None,
     task = Task.CLASSIFICATION
   elif name[-4:] == ".npz":
     train_set, test_set, data_info = load_npz_array(name)
+    dtype = train_set[0].dtype
     loaded = True
     task = Task.CLASSIFICATION
   elif name.startswith("regtest"):

@@ -16,6 +16,9 @@ else
 	BOOTSTRAP=false
 fi
 
+DATASET="imdb"
+MODEL="cnn_lstm"
+
 # Define input filenames and number of bootstrap samples
 B=100  # Number of bootstrap samples
 EXPERIMENT_DIR="/mnt/disks/checkpoints/martingale"
@@ -27,7 +30,7 @@ conda activate $HOME/miniforge3/envs/bnn
 # echo "Using python: $PYTHON"
 export PYTHONPATH="$RUNWD/:$PYTHONPATH"
 
-readarray -d '' input_checkpoints < <(find $EXPERIMENT_DIR/retrain/vi/cifar10 -wholename "*/mfvi_initsigma_0.01_meaninit__opt_adam__lr_sch_i_0.0001___epochs_300_wd_5.0_batchsize_80_temp_1.0__seed_*/model_step_299.pt" -print0)
+readarray -d '' input_checkpoints < <(find $EXPERIMENT_DIR/retrain/vi/$DATASET -wholename "*/mfvi_initsigma_0.01_meaninit__opt_adam__lr_sch_i_0.0001___epochs_300_wd_5.0_batchsize_80_temp_1.0__seed_*/model_step_299.pt" -print0)
 # Get the number of input files
 num_files="${#input_checkpoints[@]}"
 
@@ -44,20 +47,20 @@ if [ "$BOOTSTRAP" = true ]; then
 		# Call your script with the resampled filenames
 		echo "Bootstrap ensemble $i... length ${#bootstrap_sample[@]}"
 		python bnn_hmc/ensemble_checkpoints.py \
-		    --dir=$EXPERIMENT_DIR/ensemble/vi/cifar10/bootstrap \
-		    --model_name=resnet20_frn_swish \
-		    --dataset_name=cifar10 \
-		    --subset_train_to=4080 \
+		    --dir=$EXPERIMENT_DIR/ensemble/vi/$DATASET/bootstrap \
+		    --model_name=$MODEL \
+		    --dataset_name=$DATASET \
+		    --subset_train_to=4000 \
 		    --vi_checkpoints \
 		    -- ${bootstrap_sample[@]}
 	done
 else
 	echo "Ensembling checkpoints..."
 	python bnn_hmc/ensemble_checkpoints.py \
-	    --dir=$EXPERIMENT_DIR/ensemble/vi/cifar10 \
-	    --model_name=resnet20_frn_swish \
-	    --dataset_name=cifar10 \
-	    --subset_train_to=4080 \
+	    --dir=$EXPERIMENT_DIR/ensemble/vi/$DATASET \
+	    --model_name=$MODEL \
+	    --dataset_name=$DATASET \
+	    --subset_train_to=4000 \
 	    --vi_checkpoints \
 	    -- ${input_checkpoints[@]}
 fi

@@ -159,7 +159,7 @@ def train_model():
       x_test=onp.concatenate(test_set[0], axis=0),
       y_test=onp.concatenate(test_set[1], axis=0),
       data_info={
-        "num_classes": 10,  # XXX hard coded to CIFAR-10
+        "num_classes": 2,  # XXX hard coded to IMDB
         "train_shape": tuple(t.shape[1:] for t in train_set),
         "test_shape": tuple(t.shape[1:] for t in test_set),
       },
