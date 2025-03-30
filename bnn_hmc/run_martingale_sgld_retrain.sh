@@ -24,7 +24,7 @@ if [[ "$arg" == "imdb" ]]; then
     SGD_WEIGHT_DECAY_DISPLAY="3.0"
     SGD_HYPERPARAMS="$COMMON_HYPERPARAMS --init_step_size=3e-7 --num_epochs=500 --eval_freq=20 --batch_size=80 --save_freq=500"
     VI_HYPERPARAMS="$COMMON_HYPERPARAMS --init_step_size=1e-4 --num_epochs=300 --eval_freq=10 --batch_size=80 --save_freq=150 --optimizer=Adam --vi_sigma_init=0.01 --temperature=1. --vi_ensemble_size=50"
-    SGLD_HYPERPARAMS="--model_name=$MODEL --init_step_size=1e-5 --final_step_size=1e-5 --num_epochs=10000 --num_burnin_epochs=1000 --eval_freq=10 --batch_size=80 --save_freq=10 --momentum=0."
+    SGLD_HYPERPARAMS="--model_name=$MODEL --init_step_size=1e-5 --final_step_size=1e-5 --num_epochs=10000 --num_burnin_epochs=1000 --eval_freq=10000 --ensemble_freq=20 --batch_size=80 --save_freq=500 --momentum=0."
     SGD_STEP_DISPLAY="3e-07"
 else
     echo "Please specify cifar10 or imdb"
